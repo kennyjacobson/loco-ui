@@ -1,14 +1,15 @@
 import React from "react"
-
 import{ GoogleMap,  MarkerF, useJsApiLoader } from "@react-google-maps/api"
 
-const googleApiKey = "AIzaSyDCKYfKmfF5Q-Pmu3AwHFO8NGy2pZ6lau4"
+
+const googleApiKey = process.env.REACT_APP_GOOGLE_API
 const containerStyle = {
     width: '400px',
     height: '400px'
   };
 
-const MapBox = ({mapMarkers, setMapMarkers, mapCenter}) => { 
+const MapBox = ({mapMarkers, setMapMarkers, mapCenter}) => {
+    console.log("googleApiKey:", googleApiKey) 
     const {isLoaded} = useJsApiLoader ({
         googleMapsApiKey : googleApiKey
     })
