@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import abi from "./abi";
+var geohash = require('ngeohash');
 
 
 class LocoContract {
@@ -23,6 +24,7 @@ class LocoContract {
                 })
             this.contract = new ethers.Contract(this.address, this.abi, this.provider)
         } else {
+            this.provider = new ethers.providers.JsonRpcProvider('https://goerli.base.org')
             console.log("needs to install a wallet.")
             this.errorMessage = "No wallet Found."
         }
@@ -62,37 +64,29 @@ class LocoContract {
         return(locationJson)
     }
 
+    // location will contain name, description, latitude, longitude, geohash as json
+    // latitude and longitude will be multiplied by 10000000
+    // geohash will be converted to bytes32string
+    // values will be passed to contract through the addlocation function
+
+    async writeLocation(location) {
+        if (!this.contract){
+            this.errorMessage = "Not connected."
+            return
+        }
+        const tempGeohash = geohash.encode(location.latitude, location.longitude)
+        const locationGeohash = ethers.utils.formatBytes32String(tempGeohash)
+        const latitude = Math.ceil(location.latitude * 10000000)
+        const longitude = Math.ceil(location.longitude * 10000000)
+        const signer = this.provider.getSigner()
+        const contractWithSigner = new ethers.Contract(this.address, this.abi, signer)
+        console.log(location.name, location.description, latitude, longitude, locationGeohash)
+        const tx = await contractWithSigner.addLocation(location.name, location.description, latitude, longitude, locationGeohash)
+        console.log(tx)
+        return tx
+    }
+
 
 }
 
 export default LocoContract
-
-// const LocationCount = async () => {
-//     console.log("I'm here.")
-//     if (window.ethereum) {
-//         const provider = new ethers.providers.Web3Provider(window.ethereum)
-//         console.log("I'm still here.")
-//         window.ethereum.request({method : 'eth_requestAccounts'})
-//             .then(result => {
-//                 console.log(result)
-//             })
-//         const LOCO_ABI = [
-//             "function locationCount() view returns (uint256)",
-            
-//         ]
-//          const address = '0x36F2ED8be6803942B044918420dDE57B6F253E97' // Base Contract
-//         // const signer = provider.getSigner()
-//         const contract = new ethers.Contract(address, abi, provider)
-        
-//         const x = await contract.locationCount()
-//         console.log(x.toString())
-//     } else {
-//         console.log("install metamask")
-//     }
-
-    
-//     // console.log("locationCount", locationCount)
-//     // return locationCount
-// }
-
-// export default LocationCount

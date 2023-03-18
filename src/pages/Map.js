@@ -1,5 +1,5 @@
 // import { Favorite } from "@mui/icons-material"
-import { Button, Typography } from "@mui/material"
+import { Button } from "@mui/material"
 import React, { useState } from "react"
 import MapBox from "../components/MapBox"
 
@@ -22,7 +22,7 @@ const Map = ({mapMarkers, setMapMarkers, locoContract}) => {
 
         const location = await locoContract.getLocation(nextLocationId)
         setNextLocationId(nextLocationId + 1)
-        const latlng = [[location.latitude, location.longitude]]
+        const latlng = [[location.latitude, location.longitude, location.name, location.description]]
         setMapCenter({lat: location.latitude, lng: location.longitude})
         setMapMarkers(mapMarkers.concat(latlng))
 
@@ -49,7 +49,7 @@ const Map = ({mapMarkers, setMapMarkers, locoContract}) => {
         const latlng = []
         for(let i = nextLocationId; i < countPlus10; i++){
             const location = await locoContract.getLocation(i)
-            latlng.push([location.latitude, location.longitude])
+            latlng.push([location.latitude, location.longitude, location.name, location.description])
             
             
         }
@@ -61,9 +61,11 @@ const Map = ({mapMarkers, setMapMarkers, locoContract}) => {
 
     return (
         <>
-            <Typography>The Map Page</Typography>
-            <Button onClick={getTenLocationClick}>Get Next 10</Button>
+            <Button sx={{mb:1, mt:1, ml:1}} variant="contained"   onClick={getTenLocationClick}>Get Ten</Button>
+            <Button sx={{mb:1, mt:1, ml:1}} variant="contained"   onClick={getLocationClick}>Get One</Button>
+            <div style={{display: "flex", justifyContent: "center"}}>
             <MapBox mapMarkers={mapMarkers} setMapMarkers={setMapMarkers} mapCenter={mapCenter}/>
+            </div>
         </>
         
 

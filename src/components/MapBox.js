@@ -1,11 +1,12 @@
-import React from "react"
-import{ GoogleMap,  MarkerF, useJsApiLoader } from "@react-google-maps/api"
+import React, {useState} from "react"
+import{ GoogleMap,  MarkerF, useJsApiLoader, InfoWindowF } from "@react-google-maps/api"
+import { Typography, Card, CardContent } from "@mui/material";
 
 
 const googleApiKey = process.env.REACT_APP_GOOGLE_API
 const containerStyle = {
-    width: '400px',
-    height: '400px'
+    width: '90%',
+    height: '70vh'
   };
 
 const MapBox = ({mapMarkers, setMapMarkers, mapCenter}) => {
@@ -13,6 +14,21 @@ const MapBox = ({mapMarkers, setMapMarkers, mapCenter}) => {
     const {isLoaded} = useJsApiLoader ({
         googleMapsApiKey : googleApiKey
     })
+
+    //initially hide the info window
+    //display the info window when the marker is clicked
+    const [infoWindow, setInfoWindow] = useState(-1)
+ 
+
+    const onMarkerClick = (e, index) => {
+        console.log("onMarkerClick", e)
+        console.log(index)
+        setInfoWindow(index)
+    }
+
+
+
+
 
     return (
         
@@ -28,8 +44,36 @@ const MapBox = ({mapMarkers, setMapMarkers, mapCenter}) => {
                 >
                     {
                         mapMarkers.map((value, index, array) => {
+                            // initially hide the info window
+                            // display the info window when the marker is clicked
+                            
+                            
                             return(
-                                <MarkerF key={index} position={{lat:value[0], lng:value[1]}} ></MarkerF>
+                                <div key={index}>
+                                <MarkerF key={index} position={{lat:value[0], lng:value[1]}} onClick={e => onMarkerClick(e,index)} ></MarkerF>
+                                {
+                                (infoWindow === index) &&
+                                    <InfoWindowF  key={`iw${index}`} position={{lat:value[0], lng:value[1]}}>
+                                    <Card key={`ca${index}`} sx={{ minWidth: 275}}>
+                                        <CardContent>
+                                            <Typography variant="h5" component="div">
+                                                {value[2]}
+                                            </Typography>
+                                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                                {value[3]}
+                                            </Typography>
+                                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                                {value[0]}, {value[1]}
+                                            </Typography>
+                                        </CardContent>
+                                        
+                                    </Card>
+                                </InfoWindowF>
+                                }
+                                
+
+                                </div>
+                                
                             )
             
                         })

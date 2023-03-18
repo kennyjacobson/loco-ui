@@ -70,7 +70,7 @@ const Layout = () => {
                     <Route exact path="/" element={<Map mapMarkers={mapMarkers} setMapMarkers={setMapMarkers} locoContract={locoContract} />} />
                     
                     <Route exact path="map" element={<Map mapMarkers={mapMarkers} setMapMarkers={setMapMarkers} locoContract={locoContract} />} />
-                    <Route exact path="addlocation" element={<AddLocation/>} />
+                    <Route exact path="addlocation" element={<AddLocation locoContract={locoContract}/>}  />
                     <Route exact path="recents" element={<Recents/>} />
                     <Route exact path="favorites" element={<Favorites/>} />
                     <Route exact path="nearby" element={<Nearby/>} />
