@@ -7,7 +7,7 @@ const Map = ({mapMarkers, setMapMarkers, locoContract}) => {
     // console.log("from Map.js", mapMarkers)
     const [locationTotalCount, setLocationTotalCount] = useState(null)
     const [nextLocationId, setNextLocationId] = useState(0)
-    const [mapCenter, setMapCenter] = useState({lat: 44, lng: -83})
+    const [mapCenter, setMapCenter] = useState({lat: 34.0568400, lng: -118.2460100})
 
     // const getCountClick = async () => {
     //     const count = await locoContract.getLocationCount()
