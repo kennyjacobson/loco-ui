@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react"
-import { AppBar, BottomNavigation, BottomNavigationAction, Box, Button,  Paper, Toolbar, Typography } from "@mui/material"
+import { AppBar, BottomNavigation, BottomNavigationAction, Box, Button,  Grid,  Paper, Toolbar, Typography } from "@mui/material"
 // import RestoreIcon from '@mui/icons-material/Restore';
 // import FavoriteIcon from '@mui/icons-material/Favorite';
 import Map from "../pages/Map";
@@ -25,6 +25,7 @@ const Layout = () => {
     const [bottomMenuSelected, setBottomMenuSelected] = useState(0);
     const [mapMarkers, setMapMarkers] = useState([])
     const [locoContract, setLocoContract] = useState(null)
+    const [loginButtonText, setLoginButtonText] = useState("Login")
 
     useEffect( ()  => {
         // setMapMarkers(mapMarkers.concat([[44.07, -83.07]]))
@@ -34,7 +35,7 @@ const Layout = () => {
     }, [])
 
     const loginButtonClick = () => {
-        locoContract.connect()
+        locoContract.connect(setLoginButtonText)
         locoContract.getLocationCount()
     }
 
@@ -55,10 +56,20 @@ const Layout = () => {
                 >
                     <MenuIcon />
                 </IconButton> */}
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    Loco (Onchain Location Services)
-                </Typography>
-                <Button color="inherit" onClick={loginButtonClick} >Login</Button>
+                <Grid container spacing={2} >
+                    <Grid item xs={3} ></Grid>
+                    <Grid item xs={6} >
+                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                            Loco (Open Places Service)
+                        </Typography>
+
+                    </Grid>
+                    <Grid item xs={3} >
+                    <Button color="inherit" onClick={loginButtonClick} >{loginButtonText}</Button>
+                    </Grid>
+
+                </Grid>
+                
                 </Toolbar>
             </AppBar>
         </Box>

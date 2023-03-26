@@ -9,6 +9,15 @@ const containerStyle = {
     height: '70vh'
   };
 
+//convert solidity date in a hex string to javascript date
+const convertDate = (date) => {
+    const dateStr = date.toString()
+    const dateInt = parseInt(dateStr, 16)
+    const dateObj = new Date(dateInt * 1000)
+    return dateObj.toLocaleString()
+}
+
+
 const MapBox = ({mapMarkers, setMapMarkers, mapCenter}) => {
     console.log("googleApiKey:", googleApiKey) 
     const {isLoaded} = useJsApiLoader ({
@@ -46,24 +55,35 @@ const MapBox = ({mapMarkers, setMapMarkers, mapCenter}) => {
                         mapMarkers.map((value, index, array) => {
                             // initially hide the info window
                             // display the info window when the marker is clicked
-                            
+                            console.log("value", value)
                             
                             return(
                                 <div key={index}>
-                                <MarkerF key={index} position={{lat:value[0], lng:value[1]}} onClick={e => onMarkerClick(e,index)} ></MarkerF>
+                                <MarkerF key={index} position={{lat:value["latitude"], lng:value["longitude"]}} onClick={e => onMarkerClick(e,index)} ></MarkerF>
                                 {
                                 (infoWindow === index) &&
-                                    <InfoWindowF  key={`iw${index}`} position={{lat:value[0], lng:value[1]}}>
+                                    <InfoWindowF  key={`iw${index}`} position={{lat:value["latitude"], lng:value["longitude"]}}>
                                     <Card key={`ca${index}`} sx={{ minWidth: 275}}>
                                         <CardContent>
                                             <Typography variant="h5" component="div">
-                                                {value[2]}
+                                                {value["name"]}
                                             </Typography>
                                             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                                {value[3]}
+                                                {value["description"]}
                                             </Typography>
-                                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                                {value[0]}, {value[1]}
+                                            <Typography  sx={{ mb: 1.5 }} color="text.primary">
+                                                {value["streetAddress"]} <br></br>
+                                                {value["city"]}, {value["state"]} {value["zipCode"]}
+                                            </Typography>
+                                            
+                                            <Typography  sx={{  fontSize:".8em;" }} color="text.secondary">
+                                                {value["latitude"]} | {value["longitude"]} | {value["geohash"]}
+                                            </Typography>
+                                            <Typography  sx={{ fontSize:".8em;" }} color="text.secondary">
+                                                Submitter: {value["submitter"]} 
+                                            </Typography>
+                                            <Typography  sx={{  fontSize:".8em;" }} color="text.secondary">
+                                                Date Created: {convertDate(value["createdDate"])} 
                                             </Typography>
                                         </CardContent>
                                         

@@ -33,19 +33,31 @@ const AddLocation = ({locoContract}) => {
 
 
     return (
+        //Add TextFields for streetAddress, city, state, zip, and country
+        // center the form and the button
+
         <>
             <Box
                 component={"form"}
                 sx={{
-                    '& > :not(style)': { m: 1, width: '25ch' },
+                    '& > :not(style)': { m: 1, width: '35ch' },
                 }}
                 noValidate
                 autoComplete="off"
+                width={"45ch"}
+                margin={"auto"}
+                
             >
                 <TextField id="name" label="Name" variant="outlined" onChange={handleChange} />
                 <TextField id="latitude" label="Latitude" variant="outlined" onChange={handleChange}/>
                 <TextField id="longitude" label="Longitude" variant="outlined" onChange={handleChange}/>
                 <TextField id="description" label="Description" variant="outlined" onChange={handleChange}/>
+                <TextField id="streetAddress" label="Street Address" variant="outlined" onChange={handleChange}/>
+                <TextField id="city" label="City" variant="outlined" onChange={handleChange}/>
+                <TextField id="state" label="State" variant="outlined" onChange={handleChange}/>
+                <TextField id="zipCode" label="Zip Code" variant="outlined" onChange={handleChange}/>
+                <TextField id="country" label="Country" variant="outlined" onChange={handleChange}/>
+                
 
             </Box>
             <Button variant="contained" onClick={submit}>Submit</Button>
